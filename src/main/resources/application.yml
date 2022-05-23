@@ -1,0 +1,29 @@
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+      id-type: auto
+  type-aliases-package: com.tang.entity
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/tang?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+  # 开启rest 风格
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+        # swagger 报错
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  port: 8088
