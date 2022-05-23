@@ -31,6 +31,9 @@ public class GeneratorUtils {
                             .pathInfo(Collections.singletonMap(OutputFile.mapper.xml, "C:\\小白代码\\SpringBoot-vue\\src\\main\\resources\\mapper")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
+                    builder.entityBuilder().enableLombok();
+                    builder.controllerBuilder().enableHyphenStyle()
+                            .enableRestStyle(); // 开启生成@RestController 控制器
                     builder.addInclude("sys_user") // 设置需要生成的表名
                             .addTablePrefix("t_", "sys_"); // 设置过滤表前缀
                 })
