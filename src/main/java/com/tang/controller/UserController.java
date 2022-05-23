@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tang.entity.User;
-import com.tang.service.UserService;
+import com.tang.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author tang
@@ -20,7 +19,7 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private IUserService IUserService;
     @GetMapping("/page")
     public IPage<User> page(@RequestParam Integer current,
                             @RequestParam Integer size,
@@ -36,21 +35,21 @@ public class UserController {
         if(!"".equals(address))
             wrapper.like("address",address);
         wrapper.orderByDesc("id");
-        page = userService.page(page,wrapper);
+        page = IUserService.page(page,wrapper);
         return page;
     }
     @PostMapping("/save")
     public Boolean save(@RequestBody User user){
-        return userService.saveOrUpdate(user);
+        return IUserService.saveOrUpdate(user);
     }
 
     @PostMapping("/open")
     // post方法要用RequestBody 求情数据
     public Boolean delete(@RequestBody Integer id){
-        return userService.removeById(id);
+        return IUserService.removeById(id);
     }
     @PostMapping("/openMap")
     public Boolean deleteMap(@RequestBody List<Integer> id){
-        return userService.removeBatchByIds(id);
+        return IUserService.removeBatchByIds(id);
     }
 }
