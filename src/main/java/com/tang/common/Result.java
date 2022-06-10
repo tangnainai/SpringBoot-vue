@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
  * @author tang
  * @date 2022/5/24 11:01
  * @desc
- * 接口统一返回包装类
  */
 @Data
 @AllArgsConstructor

@@ -10,10 +10,13 @@
     <el-dropdown style="width: 100px; cursor: pointer">
       <div style="display: inline-block">
         <img :src="user.avatarUrl" alt=""
-             style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
+             style="width: 30px; height: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
         <span>{{ user.nickname }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
       </div>
-      <el-dropdown-menu slot="dropdown" style="width: 100px;text-align: center">
+      <el-dropdown-menu slot="dropdown" style="width: 200px;text-align: center">
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0">
+          <span style="text-decoration: none" @click="$router.push('/modify')">修改密码</span>
+        </el-dropdown-item>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
           <span style="text-decoration: none" @click="$router.push('/person')">个人信息</span>
         </el-dropdown-item>
@@ -26,15 +29,17 @@
 </template>
 
 <script>
+import {resetRouter} from "@/router";
+
 export default {
   name: "Header",
   props:{
     collapseBtnClass: String,
     collapse: Boolean,
+    user: Object,
   },
   data(){
     return{
-      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
     }
   },
   computed: {
@@ -44,13 +49,14 @@ export default {
   },
   watch: {
     currentPathName (newVal, oldVal) {
-      console.log(newVal)
     }
   },
   methods: {
     logout() {
       this.$router.push("/login")
       localStorage.removeItem("user")
+      localStorage.removeItem("menus")
+      resetRouter()
       this.$message.success("退出成功")
     },
   },

@@ -1,7 +1,6 @@
 package com.tang.exception;
 
 import lombok.Getter;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 
 /**
  * @author tang

@@ -1,7 +1,7 @@
 import axios from 'axios'
-
+import {serverIp} from "../../public/config";
 const request = axios.create({
-    baseURL: 'http://localhost:8088',  // 注意！！ 这里是全局统一加上了 '/api' 前缀，也就是说所有接口都会加上'/api'前缀在，页面里面写接口的时候就不要加 '/api'了，否则会出现2个'/api'，类似 '/api/api/user'这样的报错，切记！！！
+    baseURL: `http://${serverIp}:8088`,  // 注意！！ 这里是全局统一加上了 '/api' 前缀，也就是说所有接口都会加上'/api'前缀在，页面里面写接口的时候就不要加 '/api'了，否则会出现2个'/api'，类似 '/api/api/user'这样的报错，切记！！！
     timeout: 5000
 })
 
@@ -10,8 +10,10 @@ const request = axios.create({
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
-
-    // config.headers['token'] = user.token;  // 设置请求头
+    let user = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")): {}
+    if(user){
+        config.headers['token'] = user.token;  // 设置请求头
+    }
     return config
 }, error => {
     return Promise.reject(error)
@@ -19,6 +21,9 @@ request.interceptors.request.use(config => {
 
 // response 拦截器
 // 可以在接口响应后统一处理结果
+import ElementUI from 'element-ui'
+import router from "@/router";
+
 request.interceptors.response.use(
     response => {
         let res = response.data;
@@ -29,6 +34,15 @@ request.interceptors.response.use(
         // 兼容服务端返回的字符串数据
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
+        }
+        // 判断是否登录
+        // 当权限验证不通过的时候给出提示
+        if (res.code === '401') {
+            ElementUI.Message({
+                message: res.msg,
+                type: 'error'
+            });
+            router.push("/login")
         }
         return res;
     },

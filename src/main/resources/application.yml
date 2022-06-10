@@ -15,15 +15,23 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://localhost:3306/tang?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/tang?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+#    url: jdbc:mysql://120.24.229.94:3306/tang?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
   # 开启rest 风格
   mvc:
     hiddenmethod:
       filter:
         enabled: true
-        # swagger 报错
+    # swagger 报错
     pathmatch:
       matching-strategy: ant_path_matcher
 
 server:
   port: 8088
+
+files:
+  upload:
+    path: C:\小白代码\files\
+#    path: /root/files/
+  serverIp: localhost
+#  serverIp: 120.24.229.94

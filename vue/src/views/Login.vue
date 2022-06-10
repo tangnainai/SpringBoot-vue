@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import {setRoutes} from "@/router";
+import request from "@/utils/request";
+
 export default {
   name: "Login",
   data() {
@@ -40,11 +43,14 @@ export default {
     login(){
       this.$refs['userForm'].validate((valid) => {
         if (valid) {  // 表单校验合法
-          this.request.post("/user/login", this.user).then(res => {
+          this.request.post("/login", this.user).then(res => {
+            console.log(res)
             if(!(res.code === '200')) {
               this.$message.error(res.msg)
-            } else {
+            }else {
               localStorage.setItem("user",JSON.stringify(res.data)) // 存储用户信息到浏览器
+              localStorage.setItem("menus",JSON.stringify(res.data.menus)) // 存储用户信息到浏览器
+              setRoutes()
               this.$router.push("/home")
               this.$message.success("登录成功")
             }
